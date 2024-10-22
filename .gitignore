@@ -23,3 +23,7 @@ coverage/
 # Miscellaneous
 *.bak
 *.tmp
+public
+.firebaserc
+firebase.json
+.firebase

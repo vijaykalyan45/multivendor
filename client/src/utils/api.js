@@ -13,7 +13,7 @@ const params={
 
 export const fetchDataFromApi = async (url) => {
     try {
-        const { data } = await axios.get("http://localhost:8000" + url, params)
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}` + url, params)
         return data;
     } catch (error) {
         console.log(error);
@@ -26,7 +26,7 @@ export const fetchDataFromApi = async (url) => {
 
 export const postData = async (url, formData) => {
     try {
-        const response = await fetch("http://localhost:8000" + url, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}`  + url, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`, // Include your API key in the Authorization header
@@ -54,7 +54,7 @@ export const postData = async (url, formData) => {
 
 
 export const editData = async (url, updatedData ) => {
-    const { res } = await axios.put(`http://localhost:8000${url}`,updatedData, params)
+    const { res } = await axios.put(`${process.env.REACT_APP_API_URL}${url}`,updatedData, params)
     return res;
 }
 

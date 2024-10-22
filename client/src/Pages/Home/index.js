@@ -55,7 +55,10 @@ const Home = () => {
     if (location !== null && location !== "" && location !== undefined) {
       fetchDataFromApi(`/api/products/featured?location=${location}`).then(
         (res) => {
+          
           setFeaturedProducts(res);
+          console.log(res);
+          
         }
       );
 
