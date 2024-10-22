@@ -30,6 +30,7 @@ import { CiFilter } from "react-icons/ci";
 import { IoBagCheckOutline } from "react-icons/io5";
 import logo1 from '../../assets/images/logo1.jfif'
 import logo2 from '../../assets/images/logo1.jpg'
+import logo3 from '../../assets/images/logo3.png'
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpenNav, setIsOpenNav] = useState(false);
@@ -140,7 +141,7 @@ const Header = () => {
 
                   <Link to={"/"} className="logo">
                     {/* <img src={Logo} alt="Logo" /> */}
-                    <img src={logo2} alt="Lo" />
+                    <img src={logo3} alt="Lo" />
                   </Link>
 
                   {context.windowWidth < 992 && (

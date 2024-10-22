@@ -24,6 +24,7 @@ import { MyContext } from "../../App";
 import UserAvatarImgComponent from "../userAvatarImg";
 import logo2 from '../../assets/images/logo1.jpg'
 import { useNavigate } from "react-router-dom";
+import logo3 from '../../assets/images/logo3.png'
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -82,8 +83,8 @@ const Header = () => {
             {/* Logo Wraooer */}
             <div className="col-sm-2 part1 pr-0 ">
               <Link to={"/"} className="d-flex align-items-center logo">
-                <img src={logo2} />
-                <span className="ml-2">ECOMMERCE</span>
+                <img src={logo3} style={{width:"200px",height:"100px"}} />
+                {/* <span className="ml-2">ECOMMERCE</span> */}
               </Link>
             </div>
 

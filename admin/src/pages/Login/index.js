@@ -17,7 +17,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
-
+import logo3 from '../../assets/images/logo1-removebg-preview.png'
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
@@ -217,7 +217,7 @@ const Login = () => {
       <section className="loginSection">
         <div className="loginBox">
           <Link to={"/"} className="d-flex align-items-center flex-column logo">
-            <img src={Logo} />
+            {/* <img src={logo3} /> */}
             <span className="ml-2">ECOMMERCE</span>
           </Link>
           <div className="wrapper mt-3 card border">
