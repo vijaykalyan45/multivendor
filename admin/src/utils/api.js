@@ -22,7 +22,11 @@ export const fetchDataFromApi = async (url) => {
 
 
 export const uploadImage = async (url, formData) => {
+    console.log(url,formData);
+    
     const { res } = await axios.post(process.env.REACT_APP_BASE_URL + url , formData)
+    console.log(res);
+    
     return res;
 }
 

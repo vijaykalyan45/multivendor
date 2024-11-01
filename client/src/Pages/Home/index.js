@@ -123,8 +123,10 @@ const Home = () => {
       ).then((res) => {
         setFilterData(res.products);
         setIsLoading(false);
-        filterSlider.current.swiper.slideTo(0);
-        // console.log(selectedCat)
+        if (filterSlider.current) {
+          filterSlider.current.swiper.slideTo(0);
+      }
+              // console.log(selectedCat)
       });
     }
   }, [selectedCat]);

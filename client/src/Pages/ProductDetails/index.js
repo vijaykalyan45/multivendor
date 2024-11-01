@@ -44,6 +44,8 @@ const ProductDetails = () => {
     setActiveSize(null);
     fetchDataFromApi(`/api/products/${id}`).then((res) => {
       setProductData(res);
+      console.log(res);
+      
 
       if (
         res?.productRam.length === 0 &&
@@ -465,7 +467,14 @@ const ProductDetails = () => {
                   <div className="table-responsive">
                     <table className="table table-bordered">
                       <tbody>
-                        <tr className="stand-up">
+                       
+                          {Object.entries( productData?.specifications).map(([key, value]) => (
+          <tr key={key}>
+            <th>{key}</th>
+            <td>{value}</td>
+          </tr>
+        ))}
+                        {/* <tr className="stand-up">
                           <th>Stand Up</th>
                           <td>
                             <p>35″L x 24″W x 37-45″H(front to back wheel)</p>
@@ -548,7 +557,7 @@ const ProductDetails = () => {
                           <td>
                             <p>M, S</p>
                           </td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>

@@ -12,7 +12,7 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import { FaHome } from "react-icons/fa";
 import { loadStripe } from '@stripe/stripe-js';
 import { useNavigate } from 'react-router-dom';
-
+import LocationComponent from "../../utils/Location";
 const Cart = () => {
 
     const [cartData, setCartData] = useState([]);
@@ -229,7 +229,6 @@ const Cart = () => {
             </section>
 
             {isLoading === true && <div className="loadingOverlay"></div>}
-
 
         </>
     )

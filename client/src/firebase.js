@@ -13,13 +13,14 @@ import { initializeApp } from "firebase/app";
 //   appId: process.env.REACT_APP_FIREBASE_APP_ID
 // };
 const firebaseConfig = {
-  apiKey: "AIzaSyCaNeVfkkstyR724vIBqyNzkUyKxO2YM4I",
-  authDomain: "ecommerce-77d8b.firebaseapp.com",
-  projectId: "ecommerce-77d8b",
-  storageBucket: "ecommerce-77d8b.appspot.com",
-  messagingSenderId: "245727146498",
-  appId: "1:245727146498:web:dec4e262da4caa3e6b6d1b",
-  measurementId: "G-EMG47YN77L"
+  apiKey: "AIzaSyC79uPr3iRod26f9ja5Zmupni-rkLddi3I",
+  authDomain: "back-d386a.firebaseapp.com",
+  databaseURL: "https://back-d386a-default-rtdb.firebaseio.com",
+  projectId: "back-d386a",
+  storageBucket: "back-d386a.appspot.com",
+  messagingSenderId: "227687255064",
+  appId: "1:227687255064:web:07f66484768019e649876d",
+  measurementId: "G-QR2HW14RKN"
 };
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);

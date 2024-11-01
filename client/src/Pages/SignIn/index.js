@@ -4,11 +4,11 @@ import { MyContext } from "../../App";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
-
+import logo1 from '../../assets/images/CML.jpg'
 import GoogleImg from "../../assets/images/googleImg.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import { postData } from "../../utils/api";
-
+import axios from "axios";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
@@ -82,7 +82,7 @@ const SignIn = () => {
             msg: res.msg,
           });
 
-          setTimeout(() => {
+          setTimeout(async () => {
             history("/");
             context.setIsLogin(true);
             setIsLoading(false);
@@ -139,9 +139,19 @@ const SignIn = () => {
                   error: false,
                   msg: res.msg,
                 });
-      
-                setTimeout(() => {
-                  history("/");
+
+       
+                setTimeout( async () => {
+                  const responce=await axios.post(`http://localhost:8000/api/user/check-password?email=${res.user?.email}`)
+                  const data=await responce.data
+                  console.log(data);
+                  
+                  if(data.hasPassword===true){
+                    history("/");
+                  
+                  }else{
+                    history("/set-password");
+                  }
                   context.setIsLogin(true);
                   setIsLoading(false);
                   context.setisHeaderFooterShow(true);
@@ -209,7 +219,7 @@ const SignIn = () => {
       <div className="container">
         <div className="box card p-3 shadow border-0">
           <div className="text-center">
-            <img src={Logo} />
+            <img src={logo1} />
           </div>
 
           <form className="mt-3" onSubmit={login}>
@@ -239,8 +249,9 @@ const SignIn = () => {
                 onChange={onchangeInput}
               />
             </div>
-
-            <a className="border-effect cursor txt">Forgot Password?</a>
+            <Link to="/forgot-password" className="border-effect cursor txt">Forgot Password?
+            </Link>
+        
 
             <div className="d-flex align-items-center mt-3 mb-3 ">
               <Button type="submit" className="btn-blue col btn-lg btn-big">

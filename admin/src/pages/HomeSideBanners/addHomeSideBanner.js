@@ -139,9 +139,11 @@ const AddBanner = () => {
     } catch (error) {
       console.log(error);
     }
-
+    console.log(formdata,'formdata');
     uploadImage(apiEndPoint, formdata).then((res) => {
       console.log(selectedImages);
+      console.log(formdata,'formdata1');
+      
       fetchDataFromApi("/api/imageUpload").then((response) => {
         if (
           response !== undefined &&

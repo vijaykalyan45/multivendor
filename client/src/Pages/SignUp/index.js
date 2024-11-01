@@ -9,10 +9,11 @@ import GoogleImg from "../../assets/images/googleImg.png";
 import { postData } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import logo1 from "../../assets/images/CML.jpg";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
+import axios from "axios";
 
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
@@ -32,7 +33,7 @@ const SignUp = () => {
 
   useEffect(() => {
     context.setisHeaderFooterShow(false);
-    
+
     context.setEnableFilterTab(false);
   }, []);
 
@@ -87,11 +88,11 @@ const SignUp = () => {
 
       postData("/api/user/signup", formfields)
         .then((res) => {
-          if (res.status !== 'FAILED') {
+          if (res.status !== "FAILED") {
             context.setAlertBox({
               open: true,
               error: false,
-              msg: res?.msg,
+              msg: res?.message,
             });
 
             setTimeout(() => {
@@ -104,7 +105,7 @@ const SignUp = () => {
             context.setAlertBox({
               open: true,
               error: true,
-              msg: res.msg,
+              msg: res.message,
             });
           }
         })
@@ -127,11 +128,11 @@ const SignUp = () => {
         const user = result.user;
 
         const fields = {
-            name:user.providerData[0].displayName,
-            email: user.providerData[0].email,
-            password: null,
-            images:user.providerData[0].photoURL,
-            phone:user.providerData[0].phoneNumber
+          name: user.providerData[0].displayName,
+          email: user.providerData[0].email,
+          password: null,
+          images: user.providerData[0].photoURL,
+          phone: user.providerData[0].phoneNumber,
         };
 
         postData("/api/user/authWithGoogle", fields).then((res) => {
@@ -146,6 +147,7 @@ const SignUp = () => {
               };
 
               localStorage.setItem("user", JSON.stringify(user));
+              console.log(res);
 
               context.setAlertBox({
                 open: true,
@@ -153,11 +155,20 @@ const SignUp = () => {
                 msg: res.msg,
               });
 
-              setTimeout(() => {
-                history("/");
-                  context.setIsLogin(true);
-                  setIsLoading(false);
-                  context.setisHeaderFooterShow(true);
+              setTimeout(async () => {
+                const responce = await axios.post(
+                  `http://localhost:8000/api/user/check-password?email=${res.user?.email}`
+                );
+                const data = await responce.data;
+
+                if (data.hasPassword === true) {
+                  history("/");
+                } else {
+                  history("/set-password");
+                }
+                context.setIsLogin(true);
+                setIsLoading(false);
+                context.setisHeaderFooterShow(true);
               }, 2000);
             } else {
               context.setAlertBox({
@@ -221,7 +232,7 @@ const SignUp = () => {
       <div className="container">
         <div className="box card p-3 shadow border-0">
           <div className="text-center">
-            <img src={Logo} />
+            <img src={logo1} />
           </div>
 
           <form className="mt-2" onSubmit={register}>
@@ -278,8 +289,10 @@ const SignUp = () => {
               />
             </div>
 
-            <a className="border-effect cursor txt">Forgot Password?</a>
-
+            {/* <a className="border-effect cursor txt" href='/forgot-password'>Forgot Password?</a> */}
+            <Link to="/forgot-password" className="border-effect cursor txt">
+              Forgot Password?
+            </Link>
             <div className="d-flex align-items-center mt-3 mb-3 ">
               <div className="row w-100">
                 <div className="col-md-6">

@@ -7,7 +7,7 @@ import { FaAngleRight } from "react-icons/fa6";
 import { MyContext } from "../../../App";
 import CountryDropdown from "../../CountryDropdown";
 import Logo from "../../../assets/images/logo.jpg";
-import logo from '../'
+import logo1 from '../../../assets/images/CML.jpg'
 import { RiLogoutCircleRFill } from "react-icons/ri";
 
 const Navigation = (props) => {
@@ -113,7 +113,7 @@ id="abc"
               {context.windowWidth < 992 && (
                 <div className="pl-3">
                   <Link to="/" className="logo">
-                    <img src={Logo} alt="logo" />
+                    <img src={logo1} alt="logo" />
                   </Link>
                 </div>
               )}

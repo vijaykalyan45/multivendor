@@ -52,6 +52,28 @@ export const postData = async (url, formData) => {
 
 }
 
+export const fetchDatausingToken = async (url) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}` + url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`, // Include your API key in the Authorization header
+                'Content-Type': 'application/json', // Adjust the content type as needed
+            } // This is not usually needed for GET requests
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            const errorData = await response.json();
+            return errorData;
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 export const editData = async (url, updatedData ) => {
     const { res } = await axios.put(`${process.env.REACT_APP_API_URL}${url}`,updatedData, params)

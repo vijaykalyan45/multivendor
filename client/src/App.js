@@ -18,11 +18,13 @@ import Checkout from "./Pages/Checkout";
 import Orders from "./Pages/Orders";
 import MyAccount from "./Pages/MyAccount";
 import SearchPage from "./Pages/Search";
-
-import { fetchDataFromApi, postData } from "./utils/api";
+import ForgotPassword from "./Pages/ForgotPassword.js/ForgotPassword";
+import { fetchDataFromApi, fetchDatausingToken, postData } from "./utils/api";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-
+import AccountActivation from "./AccountActivation";
+import PasswordResetForm from "./Pages/passwordResetform.jsx/PasswordResetForm";
+import SetPasswordForm from "./setPassword";
 const MyContext = createContext();
 
 function App() {
@@ -132,6 +134,10 @@ function App() {
     } else {
       setIsLogin(false);
     }
+    fetchDatausingToken(`/api/user/get/count`).then((res) => {
+     console.log(res);
+     
+    });
   }, [isLogin]);
 
   const openProductDetailsModal = (id, status) => {
@@ -268,14 +274,19 @@ function App() {
             path="/product/:id"
             element={<ProductDetails />}
           />
+                  <Route path="/activation/:token" element={<AccountActivation />} />
+
           <Route exact={true} path="/cart" element={<Cart />} />
           <Route exact={true} path="/signIn" element={<SignIn />} />
           <Route exact={true} path="/signUp" element={<SignUp />} />
+          <Route exact={true} path="/forgot-password" element={<ForgotPassword />} />
           <Route exact={true} path="/my-list" element={<MyList />} />
           <Route exact={true} path="/checkout" element={<Checkout />} />
           <Route exact={true} path="/orders" element={<Orders />} />
           <Route exact={true} path="/my-account" element={<MyAccount />} />
           <Route exact={true} path="/search" element={<SearchPage />} />
+          <Route exact={true} path="/set-password" element={<SetPasswordForm />} />
+          <Route exact={true} path="/passwordReset/:token" element={<PasswordResetForm />} />
         </Routes>
         {isHeaderFooterShow === true && <Footer />}
 
