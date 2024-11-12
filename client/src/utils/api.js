@@ -77,7 +77,19 @@ export const fetchDatausingToken = async (url) => {
 
 export const editData = async (url, updatedData ) => {
     const { res } = await axios.put(`${process.env.REACT_APP_API_URL}${url}`,updatedData, params)
+    console.log(`${process.env.REACT_APP_API_URL}${url}`);
+    
+    console.log(res);
+    
     return res;
+}
+export const editpassword = async (url, updatedData ) => {
+    const {data} = await axios.put(`${process.env.REACT_APP_API_URL}${url}`,updatedData, params)
+    console.log(`${process.env.REACT_APP_API_URL}${url}`);
+    
+    console.log(data);
+    
+    return data;
 }
 
 export const deleteData = async (url ) => {

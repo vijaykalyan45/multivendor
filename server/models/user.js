@@ -25,6 +25,14 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false,
     }
+    ,  resetOtp: {
+        type: Number,
+        default: null
+    },
+    resetOtpExpires: {
+        type: Date,
+        default: null
+    }
 })
 
 userSchema.virtual('id').get(function () {

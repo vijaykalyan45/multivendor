@@ -25,6 +25,8 @@ import Alert from "@mui/material/Alert";
 import AccountActivation from "./AccountActivation";
 import PasswordResetForm from "./Pages/passwordResetform.jsx/PasswordResetForm";
 import SetPasswordForm from "./setPassword";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 const MyContext = createContext();
 
 function App() {
@@ -134,10 +136,7 @@ function App() {
     } else {
       setIsLogin(false);
     }
-    fetchDatausingToken(`/api/user/get/count`).then((res) => {
-     console.log(res);
-     
-    });
+ 
   }, [isLogin]);
 
   const openProductDetailsModal = (id, status) => {
@@ -235,6 +234,20 @@ function App() {
     isBottomShow
   };
 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+ 
   return (
     <BrowserRouter>
       <MyContext.Provider value={values}>

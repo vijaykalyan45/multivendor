@@ -131,7 +131,8 @@ const SignIn = () => {
                   email: res.user?.email,
                   userId: res.user?.id,
                 };
-      
+    console.log(res);
+    
                 localStorage.setItem("user", JSON.stringify(user));
       
                 context.setAlertBox({
@@ -142,8 +143,10 @@ const SignIn = () => {
 
        
                 setTimeout( async () => {
-                  const responce=await axios.post(`http://localhost:8000/api/user/check-password?email=${res.user?.email}`)
-                  const data=await responce.data
+                  const responce = await axios.post(
+                    `${process.env.REACT_APP_API_URL}/api/user/check-password?email=${res.user?.email}`
+                  );           
+                         const data=await responce.data
                   console.log(data);
                   
                   if(data.hasPassword===true){

@@ -57,7 +57,7 @@ const ForgotPassword = () => {
       try {
         if (res.error !== true) {
  
-console.log(res);
+
 
       
           context.setAlertBox({

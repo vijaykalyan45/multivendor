@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import ForgotPassword from "./pages/Login/ForgotPassword";
 import "./responsive.css";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
@@ -43,6 +44,7 @@ import HomeBottomBannersList from "./pages/HomeBottomBanners/bannerList";
 import AddHomeBottomBanner from "./pages/HomeBottomBanners/addHomeBottomBanner";
 import EditHomeBottomBanner from "./pages/HomeBottomBanners/editHomeBottomBanner";
 import MyAccount from "./pages/MyAccount";
+import SetPassword from "./pages/Login/setPassword";
 
 const MyContext = createContext();
 
@@ -99,6 +101,8 @@ function App() {
     } else {
       setIsLogin(false);
     }
+
+    
   }, [isLogin, localStorage.getItem("user")]);
 
   useEffect(() => {
@@ -237,7 +241,7 @@ function App() {
               <Route path="/" exact={true} element={<Dashboard />} />
               <Route path="/dashboard" exact={true} element={<Dashboard />} />
               <Route path="/login" exact={true} element={<Login />} />
-              <Route path="/signUp" exact={true} element={<SignUp />} />
+              <Route path="/signUp" exact={true} element={<ForgotPassword />} />
               <Route path="/products" exact={true} element={<Products />} />
               <Route
                 path="/product/details/:id"
@@ -270,6 +274,11 @@ function App() {
                 exact={true}
                 element={<SubCatList />}
               />
+                {/* <Route
+                path="/forgot-password"
+                exact={true}
+                element={<ForgotPassword />}
+              /> */}
               <Route
                 path="/subCategory/add"
                 exact={true}
@@ -309,6 +318,7 @@ function App() {
 
               <Route path="/banners" exact={true} element={<BannersList />} />
               <Route path="/banners/add" exact={true} element={<AddBanner />} />
+              {/* <Route path="/setPassword" exact={true} element={<SetPassword />} /> */}
               <Route
                 path="/banners/edit/:id"
                 exact={true}

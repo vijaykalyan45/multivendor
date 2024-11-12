@@ -32,6 +32,28 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import logo1 from '../../assets/images/logo1.jfif'
 import logo2 from '../../assets/images/logo1.jpg'
 import logo3 from '../../assets/images/logo3.png'
+
+
+import { jwtDecode } from "jwt-decode"; // You need to install this library
+
+const verifyToken = (token) => {
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() / 1000; // Current time in seconds
+    
+    // Check if the token has expired
+    if (decoded.exp < currentTime) {
+      console.log("Token has expired");
+      return false; // Token is invalid
+    }
+    
+    return true; // Token is valid
+  } catch (error) {
+    console.error("Invalid token", error);
+    return false; // Token is invalid or cannot be decoded
+  }
+};
+
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpenNav, setIsOpenNav] = useState(false);
@@ -43,6 +65,35 @@ const Header = () => {
   const context = useContext(MyContext);
 
   const history = useNavigate();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Function to check if token is valid
+    const checkToken = () => {
+      const token = localStorage.getItem('token');
+      
+      // If there's no token, user is logged out
+      if (!token) {
+        localStorage.removeItem('user');
+        return;
+      }
+
+      // Verify the token
+      const isValid = verifyToken(token);
+      if (!isValid) {
+        // If token is invalid, clear localStorage and redirect to login
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+      
+      }
+    };
+
+    // Check token when the component is mounted
+    checkToken();
+  }, [navigate]);
+
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import {
   deleteData,
   deleteImages,
+  editpassword,
   editData,
   fetchDataFromApi,
   postData,
@@ -276,46 +277,117 @@ const MyAccount = () => {
     }
   };
 
-  const changePassword = (e) => {
+  const changePassword = async (e) => {
     e.preventDefault();
-    formdata.append("password", fields.password);
-
+  
+    // Validate form fields
     if (
-      fields.oldPassword !== "" &&
-      fields.password !== "" &&
-      fields.confirmPassword !== ""
+      fields.oldPassword === "" ||
+      fields.password === "" ||
+      fields.confirmPassword === ""
     ) {
-      if (fields.password !== fields.confirmPassword) {
-        context.setAlertBox({
-          open: true,
-          error: true,
-          msg: "Password and confirm password not match",
-        });
-      } else {
-        const user = JSON.parse(localStorage.getItem("user"));
-
-        const data = {
-          name: user?.name,
-          email: user?.email,
-          password: fields.oldPassword,
-          newPass: fields.password,
-          phone: formFields.phone,
-          images: formFields.images,
-        };
-
-        editData(`/api/user/changePassword/${user.userId}`, data).then(
-          (res) => {
-          
-          }
-        );
-      }
-    } else {
       context.setAlertBox({
         open: true,
         error: true,
-        msg: "Please fill all the details",
+        msg: "Please fill all the details", // Error message for missing fields
       });
-      return false;
+      return; // Stop further execution if fields are not filled
+    }
+  
+    // Check if password and confirm password match
+    if (fields.password !== fields.confirmPassword) {
+      context.setAlertBox({
+        open: true,
+        error: true,
+        msg: "Password and confirm password do not match", // Error message for mismatch
+      });
+      return; // Stop further execution if passwords do not match
+    }
+  
+    const user = JSON.parse(localStorage.getItem("user")); // Get user details from localStorage
+    const data = {
+      name: user?.name,
+      email: user?.email,
+      password: fields.oldPassword, // Current password
+      newPass: fields.password, // New password
+      phone: formFields.phone,
+      images: formFields.images,
+    };
+  
+    try {
+      setIsLoading(true); // Start loading spinner
+  
+      // Make the API request to change password
+      const res = await editpassword(`/api/user/changePassword/${user.userId}`, data);
+  
+      console.log(res); // Log the response for debugging
+  
+      if (!res.error) {
+        // Success case: password updated successfully
+        context.setAlertBox({
+          open: true,
+          error: false,
+          msg: "Password updated successfully!", // Success message
+        });
+      } else {
+        // If there's an error, handle the specific error message from API
+        if (res.msg && res.msg.toLowerCase().includes("incorrect password")) {
+          // Handle incorrect password
+          context.setAlertBox({
+            open: true,
+            error: true,
+            msg: "Incorrect current password. Please try again.", // Specific error for wrong current password
+          });
+        } else {
+          // Handle any other errors
+          context.setAlertBox({
+            open: true,
+            error: true,
+            msg: res.msg || "Failed to update password", // Generic error message from the API
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+  
+      if (error.response) {
+        // If error.response exists, it means the error was returned by the server
+        console.log("Error response data:", error.response.data);
+  
+        // If the error message contains 'Current password is incorrect'
+        if (error.response.data?.msg?.toLowerCase().includes("incorrect password")) {
+          context.setAlertBox({
+            open: true,
+            error: true,
+            msg: "Incorrect current password. Please try again.", // Custom message for wrong password
+          });
+        } else {
+          // Handle other errors
+          context.setAlertBox({
+            open: true,
+            error: true,
+            msg: error.response.data?.msg || "An error occurred. Please try again.", // Generic error message
+          });
+        }
+      } else if (error.request) {
+        // If there's no response (could be a network error)
+        console.error("No response received:", error.request);
+        context.setAlertBox({
+          open: true,
+          error: true,
+          msg: "Network error. Please check your internet connection.", // Network error message
+        });
+      } else {
+        // Unknown error
+        console.error("Unknown error:", error.message);
+        context.setAlertBox({
+          open: true,
+          error: true,
+          msg: "An unexpected error occurred. Please try again.", // Generic error message
+        });
+      }
+    } finally {
+      setIsLoading(false); // Stop loading spinner
     }
   };
 

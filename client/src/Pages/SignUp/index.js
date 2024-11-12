@@ -88,11 +88,13 @@ const SignUp = () => {
 
       postData("/api/user/signup", formfields)
         .then((res) => {
+     
+         
           if (res.status !== "FAILED") {
             context.setAlertBox({
               open: true,
               error: false,
-              msg: res?.message,
+              msg: res?.msg,
             });
 
             setTimeout(() => {
@@ -105,7 +107,7 @@ const SignUp = () => {
             context.setAlertBox({
               open: true,
               error: true,
-              msg: res.message,
+              msg: res.msg,
             });
           }
         })
@@ -157,7 +159,7 @@ const SignUp = () => {
 
               setTimeout(async () => {
                 const responce = await axios.post(
-                  `http://localhost:8000/api/user/check-password?email=${res.user?.email}`
+                  `${process.env.REACT_APP_API_URL}/api/user/check-password?email=${res.user?.email}`
                 );
                 const data = await responce.data;
 

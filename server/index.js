@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const errorHandler=require('./utils/ErrorHandler.js')
 const cors = require('cors');
 require('dotenv/config');
 
@@ -50,7 +51,7 @@ app.use(`/api/banners`, bannersSchema);
 app.use(`/api/homeSideBanners`, homeSideBannerSchema);
 app.use(`/api/homeBottomBanners`, homeBottomBannerSchema);
 
-
+app.use(errorHandler);
 
 //Database
 mongoose.connect(process.env.CONNECTION_STRING, {

@@ -8,8 +8,7 @@ const verifyToken = (req, res, next) => {
         return res.status(403).json({ success: false, message: 'No token provided' });
     }
 
-    console.log('Secret Key:', process.env.JSON_WEB_TOKEN_SECRET_KEY);
-    console.log('Token:', token);
+ 
     
     jwt.verify(token, process.env.JSON_WEB_TOKEN_SECRET_KEY, (err, decoded) => {
         if (err) {

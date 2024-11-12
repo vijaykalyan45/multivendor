@@ -8,7 +8,7 @@ import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 import googleIcon from "../../assets/images/googleIcon.png";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../utils/api";
@@ -17,7 +17,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
-import logo3 from '../../assets/images/logo1-removebg-preview.png'
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
@@ -107,7 +106,7 @@ const Login = () => {
               context.setIsLogin(true);
               history("/dashboard");
               setIsLoading(false);
-              // window.location.href = "/dashboard";
+
             }, 2000);
           } else {
             context.setAlertBox({
@@ -133,83 +132,92 @@ const Login = () => {
   };
 
   const signInWithGoogle = () => {
+    setIsLoading(true); // Start loading
     signInWithPopup(auth, googleProvider)
-      .then((result) => {
+      .then(async (result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
+
         const user = result.user;
-
+  
         const fields = {
-          name: user.providerData[0].displayName,
           email: user.providerData[0].email,
-          password: null,
-          images: user.providerData[0].photoURL,
-          phone: user.providerData[0].phoneNumber,
-          isAdmin: true,
         };
+  
+        try {
 
-        postData("/api/user/authWithGoogle", fields).then((res) => {
-          try {
-            if (res.error !== true) {
-              localStorage.setItem("token", res.token);
-
-              const user = {
-                name: res.user?.name,
-                email: res.user?.email,
-                userId: res.user?.id,
-              };
-
-              localStorage.setItem("user", JSON.stringify(user));
-
+          const response = await postData("/api/user/checkUser", { email: fields.email });
+  
+          if (response.error) {
+            // Handle any server-side errors
+            context.setAlertBox({
+              open: true,
+              error: true,
+              msg: response.msg,
+            });
+            return;
+          }
+  
+          const { exists: userExists, isAdmin, token: serverToken, user: userInfo } = response;
+  
+          if (userExists) {
+            if (isAdmin) {
+              // Admin user logic
               context.setAlertBox({
                 open: true,
                 error: false,
-                msg: res.msg,
+                msg: "Admin Login Successfully!",
               });
-
+  
+              // Store user and token in localStorage
+              localStorage.setItem("user", JSON.stringify(userInfo));
+              localStorage.setItem("token", serverToken); // Store the JWT token
+  
               setTimeout(() => {
                 context.setIsLogin(true);
                 history("/dashboard");
               }, 2000);
             } else {
+              // Non-admin user logic
               context.setAlertBox({
                 open: true,
                 error: true,
-                msg: res.msg,
+                msg: " you are not a admin",
               });
-              setIsLoading(false);
+  
+              // Store user and token in localStorage if necessary
+              localStorage.setItem("user", JSON.stringify(userInfo));
+              localStorage.setItem("token", serverToken); // Store the JWT token
             }
-          } catch (error) {
-            console.log(error);
-            setIsLoading(false);
+          } else {
+            // User does not exist
+            context.setAlertBox({
+              open: true,
+              error: true,
+              msg: "User not found",
+            });
           }
-        });
-
-        context.setAlertBox({
-          open: true,
-          error: false,
-          msg: "User authentication Successfully!",
-        });
-
-        // window.location.href = "/";
+        } catch (error) {
+          console.error("Error during check user request:", error);
+          context.setAlertBox({
+            open: true,
+            error: true,
+            msg: "An error occurred while checking the user.",
+          });
+        } finally {
+          setIsLoading(false); // Ensure loading state is reset
+        }
       })
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
         context.setAlertBox({
           open: true,
           error: true,
           msg: errorMessage,
         });
-        // ...
       });
   };
+  
+  
 
   return (
     <>
@@ -275,9 +283,9 @@ const Login = () => {
               </div>
 
               <div className="form-group text-center mb-0">
-                <Link to={"/forgot-password"} className="link">
+                {/* <Link to={"/forgot-password"} className="link">
                   FORGOT PASSWORD
-                </Link>
+                </Link> */}
                 <div className="d-flex align-items-center justify-content-center or mt-3 mb-3">
                   <span className="line"></span>
                   <span className="txt">or</span>
@@ -296,14 +304,14 @@ const Login = () => {
             </form>
           </div>
 
-          <div className="wrapper mt-3 card border footer p-3">
+          {/* <div className="wrapper mt-3 card border footer p-3">
             <span className="text-center">
               Don't have an account?
               <Link to={"/signUp"} className="link color ml-2">
                 Register
               </Link>
             </span>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

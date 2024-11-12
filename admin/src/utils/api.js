@@ -12,6 +12,8 @@ const params={
 
 export const fetchDataFromApi = async (url) => {
     try {
+      
+        
         const { data } = await axios.get(process.env.REACT_APP_BASE_URL + url,params)
         return data;
     } catch (error) {
@@ -33,6 +35,8 @@ export const uploadImage = async (url, formData) => {
 export const postData = async (url, formData) => {
 
     try {
+      
+        
         const response = await fetch(process.env.REACT_APP_BASE_URL + url, {
             method: 'POST',
             headers: {
@@ -44,6 +48,7 @@ export const postData = async (url, formData) => {
         });
 
 
+      console.log(response.data);
       
 
         if (response.ok) {
@@ -77,4 +82,12 @@ export const deleteData = async (url ) => {
 export const deleteImages = async (url,image ) => {
     const { res } = await axios.delete(`${process.env.REACT_APP_BASE_URL}${url}`,image);
     return res;
+}
+export const editpassword = async (url, updatedData ) => {
+    const {data} = await axios.put(`${process.env.REACT_APP_BASE_URL}${url}`,updatedData, params)
+  
+    
+    console.log(data);
+    
+    return data;
 }
